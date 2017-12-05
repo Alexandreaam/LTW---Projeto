@@ -1,5 +1,10 @@
 <html>
 <body>
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do Lists</title>
+    <script src="MainMenuJS.js" defer></script>
+</head>
 <section id="welcome">
     Welcome
     <?php
@@ -29,14 +34,13 @@
     ?>
     list(s)!
 </section>
-</section>
 <form method="post" id="createlist">
     <input type="submit" name="Create" id="Create" value="Create List" /><br/>
 </form>
-<input type="submit" name="Delete" id="Delete" value="Delete List" /><br/>
 <select id="del">
-    <option>Select one to Delete</option>
+    <option name="options" value="0">Select one to Delete</option>
 </select>
+<input type="button" value="Delete List" id="Delete List">
 <?php
 echo "<br/>";
 if(array_key_exists('Create',$_POST)){
@@ -44,16 +48,24 @@ if(array_key_exists('Create',$_POST)){
     header("Location: http://gnomo.fe.up.pt/~up201404422/Projeto/ListCreationPage.php"); /* Redirect browser */
     exit();
 }
-$id_lists = UserLists($user);
-if(NumberOfLists($user) > 0){
-    echo "Lists: <br/>";
-}
-foreach ($id_lists as $id_list) {
-    echo GetListName($id_list['id_list']);
-    $resource = newt_button ("Delete");
-    echo "<br/>";
-}
 ?>
+<section id="lists">
+    <?php
+    if(NumberOfLists($user) > 0){
+    echo "Lists: <br/>";
+    }
+    ?>
+</section>
+<section id="list names">
+<?php
+    $id_lists = UserLists($user);
+    echo '<ul>';
+    foreach($id_lists as $id_list){
+        echo '<li>'.GetListName($id_list['id_list']).'</li>';
+    }
+    echo '</ul>';
+?>
+
 
 </body>
 </html> 

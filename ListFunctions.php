@@ -13,9 +13,22 @@ function GetListName($id_list){
         return $list_name['name'];
     }
 }
+function GetListId($name){
+    $db = new PDO('sqlite:servidor.db');
+    $stmt = $db->prepare("SELECT id_list FROM lists WHERE name = :name");
+    if(!$stmt) {
+        echo "Invalid Database Query";
+        echo "<br/>";
+    }
+    else {
+        $stmt->bindParam(':name', $name);
+        $stmt->execute();
+        $id_list = $stmt->fetch();
+        return $id_list['id_list'];
+    }
+}
 function UserLists($user){
     $db = new PDO('sqlite:servidor.db');
-    if(UserExists($user)){
         $stmt = $db->prepare("SELECT id_list FROM users JOIN Lists ON users.id_user=lists.id_user WHERE username = :user");
         if(!$stmt) {
             echo "Invalid Database Query";
@@ -27,10 +40,6 @@ function UserLists($user){
             $id_lists = $stmt->fetchAll();
             return $id_lists;
         }
-    }
-    else {
-        echo "User does not exist";
-    }
 }
 function CreateList($id_user, $name, $color, $category, $duedate) {
     $db = new PDO('sqlite:servidor.db');
@@ -40,19 +49,30 @@ function CreateList($id_user, $name, $color, $category, $duedate) {
         echo "<br/>";
     }
     else {
-        $currdate = date_default_timezone_get();
+        $currdate = date("Y-m-d");
         $stmt->bindParam(':id_user', $id_user);
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':color', $color);
         $stmt->bindParam(':category', $category);
         $stmt->bindParam(':duedate', $duedate);
-        //$stmt->bindParam(':currentdate', $currdate);
+        $stmt->bindParam(':currdate', $currdate);
+        $stmt->execute();
+    }
+}
+function DeleteList($id_list) {
+    $db = new PDO('sqlite:servidor.db');
+    $stmt = $db->prepare("DELETE FROM lists WHERE id_list = :id_list");
+    if(!$stmt) {
+        echo "Invalid Database Query";
+        echo "<br/>";
+    }
+    else {
+        $stmt->bindParam(':id_list', $id_list);
         $stmt->execute();
     }
 }
 function AddListUser($user, $currnlists){
     $db = new PDO('sqlite:servidor.db');
-    if(UserExists($user)){
         $n_lists=$currnlists+1;
         $stmt = $db->prepare("UPDATE users SET n_lists = :n_lists  WHERE username = :user");
         if(!$stmt) {
@@ -64,14 +84,9 @@ function AddListUser($user, $currnlists){
             $stmt->bindParam(':n_lists', $n_lists);
             $stmt->execute();
         }
-    }
-    else {
-        echo "User does not exist";
-    }
 }
 function RemoveListUser($user, $currnlists){
     $db = new PDO('sqlite:servidor.db');
-    if(UserExists($user)){
         $n_lists=$currnlists-1;
         $stmt = $db->prepare("UPDATE users SET n_lists = :n_lists  WHERE username = :user");
         if(!$stmt) {
@@ -83,14 +98,9 @@ function RemoveListUser($user, $currnlists){
             $stmt->bindParam(':n_lists', $n_lists);
             $stmt->execute();
         }
-    }
-    else {
-        echo "User does not exist";
-    }
 }
 function NumberOfLists($user) {
     $db = new PDO('sqlite:servidor.db');
-    if(UserExists($user)){
         $stmt = $db->prepare("SELECT n_lists FROM users WHERE username = :user");
         if(!$stmt) {
             echo "Invalid Database Query";
@@ -102,9 +112,5 @@ function NumberOfLists($user) {
             $numb = $stmt->fetch();
             return $numb['n_lists'];
         }
-    }
-    else {
-        echo "User does not exist";
-    }
 }
 ?>
