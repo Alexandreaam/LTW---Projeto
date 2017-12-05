@@ -30,14 +30,4 @@ function log() {
     else if(logi.style.display === "block" && regi.style.display === "none"){
         logi.style.display = "none";
     }
-}/*
-let form = document.getElementsByTagName('form')[0];
-form.addEventListener('submit', function() {
-  alert('Registado!');
-});
-
-let form2 = document.getElementsByTagName('form')[1];
-form2.addEventListener('submit', function() {
-  alert('Login!');
-});
-*/
+}

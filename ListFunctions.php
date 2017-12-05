@@ -1,4 +1,18 @@
 <?php
+function GetListInfo($id_list){
+    $db = new PDO('sqlite:servidor.db');
+    $stmt = $db->prepare("SELECT name,dateofcreation,duedate,color,category FROM lists WHERE id_list = :id_list");
+    if(!$stmt) {
+        echo "Invalid Database Query";
+        echo "<br/>";
+    }
+    else {
+        $stmt->bindParam(':id_list', $id_list);
+        $stmt->execute();
+        $list_info = $stmt->fetch();
+        return $list_info;
+    }
+}
 function GetListName($id_list){
     $db = new PDO('sqlite:servidor.db');
     $stmt = $db->prepare("SELECT name FROM lists WHERE id_list = :id_list");
@@ -13,15 +27,16 @@ function GetListName($id_list){
         return $list_name['name'];
     }
 }
-function GetListId($name){
+function GetListId($name, $id_user){
     $db = new PDO('sqlite:servidor.db');
-    $stmt = $db->prepare("SELECT id_list FROM lists WHERE name = :name");
+    $stmt = $db->prepare("SELECT id_list FROM lists WHERE name = :name AND id_user = :id_user");
     if(!$stmt) {
         echo "Invalid Database Query";
         echo "<br/>";
     }
     else {
         $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':id_user', $id_user);
         $stmt->execute();
         $id_list = $stmt->fetch();
         return $id_list['id_list'];
