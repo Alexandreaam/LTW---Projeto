@@ -6,7 +6,7 @@
 let select = document.getElementById("selector");
 let button = document.querySelector('input[type=button]');
 
-var ListItems = document.getElementById('list names').getElementsByTagName('li');
+var ListItems = document.getElementById('listNames').getElementsByTagName('li');
 
 for (var i = 0; i < ListItems.length; i++){
     let text = ListItems[i].innerHTML;
@@ -16,7 +16,7 @@ for (var i = 0; i < ListItems.length; i++){
     select.appendChild(option);
 }
 
-let form = document.getElementById('Delete List');
+let form = document.getElementById('DeleteList');
 form.addEventListener('click', function() {
     let element = document.getElementById("selector");
     let selection = element.options[element.selectedIndex].text;
@@ -31,7 +31,7 @@ form.addEventListener('click', function() {
     }
 });
 
-let form2 = document.getElementById('Open List');
+let form2 = document.getElementById('OpenList');
 form2.addEventListener('click', function() {
     let element = document.getElementById("selector");
     let selection = element.options[element.selectedIndex].text;

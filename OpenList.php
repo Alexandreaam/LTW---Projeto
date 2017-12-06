@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<>
 <?php
 session_start();
 $user = $_SESSION['currentuser'];
@@ -22,5 +20,4 @@ if(array_key_exists('Logout',$_POST)){
     header("Location: http://gnomo.fe.up.pt/~up201404422/Projeto/index.php"); /* Redirect browser */
     exit();
 }
-
 ?>
